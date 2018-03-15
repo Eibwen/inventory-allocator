@@ -101,7 +101,7 @@ namespace InventoryAllocatorTests
 
             //Arrange
             var orderInput = "{ apple: 4, pear: 4 }";
-            var warehouseInput = @"[{ name: ""one"", inventory: { apple: 0, pear: 2 } },
+            var warehouseInput = @"[{ name: ""one"", inventory: { grape: 50, pear: 2 } },
 { name: ""two"", inventory: { apple: 1, pear: 10 } },
 { name: ""three"", inventory: { apple: 10, pear: 1 } }]";
 
@@ -122,7 +122,10 @@ namespace InventoryAllocatorTests
             var shipment2 = result.Skip(1).First();
             var shipment3 = result.Skip(2).First();
 
-System.Console.WriteLine(JsonConvert.SerializeObject(result));
+
+            //TODO remove this debugging (don't have a proper debugger setup on this IDE either):
+            System.Console.WriteLine(JsonConvert.SerializeObject(result));
+            
             Assert.That(shipment1.Key, Is.EqualTo("one"));
             Assert.That(shipment1.Value.Count, Is.EqualTo(1), "from warehouse 'one', expect only one package of pears");
             Assert.That(shipment1.Value["pear"], Is.EqualTo(2));
@@ -132,9 +135,9 @@ System.Console.WriteLine(JsonConvert.SerializeObject(result));
             Assert.That(shipment2.Value["apple"], Is.EqualTo(1));
             Assert.That(shipment2.Value["pear"], Is.EqualTo(2));
 
-            Assert.That(shipment1.Key, Is.EqualTo("three"));
-            Assert.That(shipment1.Value.Count, Is.EqualTo(1), "from warehouse 'three', only need to complete apples");
-            Assert.That(shipment1.Value["apple"], Is.EqualTo(3));
+            Assert.That(shipment3.Key, Is.EqualTo("three"));
+            Assert.That(shipment3.Value.Count, Is.EqualTo(1), "from warehouse 'three', only need to complete apples");
+            Assert.That(shipment3.Value["apple"], Is.EqualTo(3));
         }
     }
 }

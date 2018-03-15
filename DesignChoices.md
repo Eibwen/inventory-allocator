@@ -25,6 +25,7 @@
 * Day 2 (started at commit of .gitignore)
 ** <commit of .gitignore>-3:45: refactoring project structure, and getting test project hooked up (had some issues with commands, seems to only work well when current directory is the context, see .bat file for details)
 ** 4:20: Actually starting the implementation of the allocator
+** 6:10: All supplied test cases working (distracted by some planning of what I'm doing tonight with friends)
 
 
 

@@ -90,28 +90,32 @@ namespace InventoryAllocator
         {
             var orderFulfillment = new OrderFulfillment();
 
+            // <comment for reviewers only:> This is a semi-hacky way to get around "Collection was modified; enumeration operation may not execute." exceptions.  It is safe here as long as I know this is the only code modifying the collection
+            var orderKeys = new List<string>(order.Keys);
+
             foreach (var warehouse in warehouseNetwork)
             {
                 var partialOrder = new Order();
 
-                foreach (var orderItem in order)
+                foreach (var itemName in orderKeys)
                 {
-                    if (!warehouse.Inventory.ContainsKey(orderItem.Key))
+                    if (!warehouse.Inventory.ContainsKey(itemName))
                     {
                         continue;
                     }
 
-                    var warehouseItemCount = warehouse.Inventory[orderItem.Key];
+                    var orderItemQuantity = order[itemName];
+                    var warehouseItemCount = warehouse.Inventory[itemName];
 
-                    var amountCanFullfill = Math.Min(orderItem.Value, warehouseItemCount);
+                    var amountCanFullfill = Math.Min(orderItemQuantity, warehouseItemCount);
 
                     if (amountCanFullfill > 0)
                     {
-                        partialOrder.Add(orderItem.Key, amountCanFullfill);
+                        partialOrder.Add(itemName, amountCanFullfill);
 
                         //No need to update warehouse inventory directly here
                         //Do need to update order quantity remaining to fulfill, BUT the KeyValuePair object in C# is immutable... need to update the order dictionary itself
-                        order[orderItem.Key] -= amountCanFullfill;
+                        order[itemName] -= amountCanFullfill;
                     }
                 }
 
