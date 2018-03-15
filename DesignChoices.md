@@ -4,8 +4,11 @@
 
 
 ### Time log
-* 1 hour on getting IDE and initial project setup (Day 1)
-* <commit of .gitignore>-3:45: refactoring project structure, and getting test project hooked up (had some issues with commands, seems to only work well when current directory is the context, see .bat file for details)
+* Day 1 (started late in the day):
+** 1 hour on getting IDE and initial project setup
+* Day 2 (started at commit of .gitignore)
+** <commit of .gitignore>-3:45: refactoring project structure, and getting test project hooked up (had some issues with commands, seems to only work well when current directory is the context, see .bat file for details)
+
 
 
 ### Project language
@@ -23,7 +26,7 @@
 1. Setup the CLI tools: https://www.microsoft.com/net/learn/get-started
 1. Clone this repository
 1. Navigate to `\InventoryAllocator\src`
-1. Use the command `dotnet test` when in the root of this repo
+1. Use the command `dotnet test .\InventoryAllocatorTests` when in the `src` folder
 
 
 ### Project structure
@@ -40,3 +43,12 @@
 * Newtonsoft Json.net is the defacto standard for JSON serialization/deserialization in .Net
 * NUnit3, Having used JUnit in college and previously, and NUnit2 extensively, NUnit3 added support for parallelized test runs which was the only thing I personally find valuable in XUnit.  Although some of the patterns that XUnit uses are more modern, my history causes me to not generally need to utilize those features, and mitigate the issues they are solving in other ways
 
+
+### Conclusions
+* .Net core without having an full up-to-date version of Visual Studio is not a good choice for projects like this
+* I have become very reliant on Visual Studio and Resharper, and getting C# to work without them requires lots of minor details that those allow you to gloss over (I should have used Visual Studio Community, not Visual Studio Code)
+** As an aside, Microsoft is being horrible with reusing parts of nams of things that actaully end up being very different from each other, I didn't fully realize how bad it was
+
+
+### Issues with documentation
+* `[ { name: owd, inventory: { apple: 5, orange: 10 } }, { name: dm:, inventory: { banana: 5, orange: 10 } } ]` is not valid json
