@@ -1,3 +1,16 @@
+### Assumptions/should ask for clarification on
+* The problem asks for the cheapest shipment, is splitting it across warehouses cheaper, or is one shipment cheaper?  Is there some cut-off in there?
+** Assumption: 1 shipment is always cheaper than 2, no matter what warehouse it must come from
+* I would normally write fewer doc comments and you should be able to see whats going on with ignoring all the comments, but for exercises like this feel including my thought process would never be a negative
+** Comments starting with "// <comment for reviewers only:> " would be not be included at all normally, are only for the purpose of explaining some conventions that are part of C# that most might not be familiar with
+
+
+
+### Program design choices
+* I tend to use DTO (aka POJO/POCO) over having the object itself owning much business logic, instead that logic should live in an Application layer, not a Model layer
+
+
+
 ### TODO
 * ~Refactor so that Tests can be in a different project~
 * ~Add .gitignore file~
@@ -8,6 +21,7 @@
 ** 1 hour on getting IDE and initial project setup
 * Day 2 (started at commit of .gitignore)
 ** <commit of .gitignore>-3:45: refactoring project structure, and getting test project hooked up (had some issues with commands, seems to only work well when current directory is the context, see .bat file for details)
+** 4:20: Actually starting the implementation of the allocator
 
 
 
@@ -23,6 +37,7 @@
 
 
 ### Steps to run this:
+1. This exact code may or may not work on Linux/Mac, I would guess yes, but I didn't specifically test that, my belief is that "dotnetstandard" is functional on other operating systems today, but it might still be a work in progress
 1. Setup the CLI tools: https://www.microsoft.com/net/learn/get-started
 1. Clone this repository
 1. Navigate to `\InventoryAllocator\src`
@@ -48,6 +63,7 @@
 * .Net core without having an full up-to-date version of Visual Studio is not a good choice for projects like this
 * I have become very reliant on Visual Studio and Resharper, and getting C# to work without them requires lots of minor details that those allow you to gloss over (I should have used Visual Studio Community, not Visual Studio Code)
 ** As an aside, Microsoft is being horrible with reusing parts of nams of things that actaully end up being very different from each other, I didn't fully realize how bad it was
+* Somewhat flakey internet also slows me down significantly due to context switching whilst waiting for search results to be consumable
 
 
 ### Issues with documentation

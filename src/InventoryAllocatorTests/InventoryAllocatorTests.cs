@@ -14,8 +14,8 @@ namespace InventoryAllocatorTests
         public void When_exact_inventory_matches()
         {
             //Arrange
-            var orderInput = "";
-            var warehouseInput = "";
+            var orderInput = "{ apple: 1 }";
+            var warehouseInput = @"[{ name: ""owd"", inventory: { apple: 1 } }]";
             // <comment for reviewers only:> structuring it this way so that if I wanted to refactor to use [TestCase(string, string)] for various happy cases, it is easier to do that
 
             var order = JsonConvert.DeserializeObject<Order>(orderInput);
@@ -28,9 +28,20 @@ namespace InventoryAllocatorTests
             var result = allocator.Allocate(order, warehouse);
 
             //Assert
-            
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result.First().Key, Is.EqualTo("owd"));
+            Assert.That(result.First().Value["apple"], Is.EqualTo(1));
         }
 
+        [Test]
+        public void When_input_is_null_should_throw_exception()
+        {
+            //Arrange
+            var allocator = new InventoryAllocator.InventoryAllocator();
 
+            //Act & Assert
+            Assert.Throws<ArgumentNullException>(() => allocator.Allocate(null, null));
+        }
     }
 }
