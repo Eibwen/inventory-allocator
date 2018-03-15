@@ -1,11 +1,11 @@
 ### TODO
-* Refactor so that Tests can be in a different project
-* Add .gitignore file
+* ~Refactor so that Tests can be in a different project~
+* ~Add .gitignore file~
 
 
 ### Time log
 * 1 hour on getting IDE and initial project setup (Day 1)
-* 
+* <commit of .gitignore>-3:45: refactoring project structure, and getting test project hooked up (had some issues with commands, seems to only work well when current directory is the context, see .bat file for details)
 
 
 ### Project language
@@ -13,15 +13,17 @@
 ** I could do it in TypeScript, which I'd be fairly comfortable developing within SublimeText, but still figure I'd risk making choices based on my C# knowledge which may or may not follow TypeScript conventions
 ** Really debating if using .Net Core is overkill for this exercise, I've only done any initial setup with .Net Core once before, and its changed slightly from that time.  Other languages I could definitely spin up quicker, but for any personal project I would still tend to choose .Net because the initial setup and semi-complex structure that is suggested is a one-time task no matter how painful it might be, and feel it will result in much more maintainable and navigatable code (well at least navigatable for those familiar with .Net)
 * I am using .Net Core which I haven't done too much with overall, and using Visual Studio Code which I've previously only used as a text editor not an IDE
-* Also I'm using a mvc project because that is the way to build an API in the .Net world, likely my Views folder will only contain the defaults that get generated.  Felt like that would be more realistic than a console app taking in a json string or anything else.  Although the initial setup for this requires a number of generated files :/
+** Also in hindsight, either I missed some steps or just VSCode does not work well for actual C# work... :/
+** In hindsight this was somewhat a mistake, the "dotnetcore" vs "dotnetstandard" and various libraries only supporting one is still in a good amount of flux, and caused issues for me
+* ~Also I'm using a mvc project because that is the way to build an API in the .Net world, likely my Views folder will only contain the defaults that get generated.  Felt like that would be more realistic than a console app taking in a json string or anything else.  Although the initial setup for this requires a number of generated files :/~
+* Scratch the MVC API idea, since that should be a pass-through to a library anyway
 
 
 ### Steps to run this:
 1. Setup the CLI tools: https://www.microsoft.com/net/learn/get-started
 1. Clone this repository
 1. Navigate to `\InventoryAllocator\src`
-1. Use the command `dotnet run` when in the root of this repo
-1. You should see a message `Now listening on: http://localhost:5000` and be able to navigate to that
+1. Use the command `dotnet test` when in the root of this repo
 
 
 ### Project structure
