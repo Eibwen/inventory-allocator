@@ -1,13 +1,16 @@
 ### Assumptions/should ask for clarification on
 * The problem asks for the cheapest shipment, is splitting it across warehouses cheaper, or is one shipment cheaper?  Is there some cut-off in there?
 ** Assumption: 1 shipment is always cheaper than 2, no matter what warehouse it must come from
+*** BUT I'm going to start with being greedy about orders, meaning I'm NOT optmising the number of shipments (I should have a test case illustrating this)
 * I would normally write fewer doc comments and you should be able to see whats going on with ignoring all the comments, but for exercises like this feel including my thought process would never be a negative
 ** Comments starting with "// <comment for reviewers only:> " would be not be included at all normally, are only for the purpose of explaining some conventions that are part of C# that most might not be familiar with
+* Instead of returning an empty object when no allocation is possible, I am returning null
 
 
 
 ### Program design choices
 * I tend to use DTO (aka POJO/POCO) over having the object itself owning much business logic, instead that logic should live in an Application layer, not a Model layer
+* I've come to prefer a pattern for unit test of naming the test "When_..." and the `Assert` statements are the "Should" statements
 
 
 
