@@ -11,6 +11,9 @@ namespace InventoryAllocator
             if (order == null) throw new ArgumentNullException("order");
             if (warehouseNetwork == null) throw new ArgumentNullException("warehouseNetwork");
 
+            if (order.Values.Any(x => x < 0)) throw new ArgumentException("Invalid order");
+            // <comment for reviewers only:> going to assume the warehouse data is from a trusted data source, but assuming the order data may not be
+
             if (!CanFulfillOrder(order, warehouseNetwork))
             {
                 //None of the attempts resulted in a fulfilled order (DesignChoice: return null for this)

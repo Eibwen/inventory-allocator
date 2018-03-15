@@ -66,6 +66,27 @@ namespace InventoryAllocatorTests
         }
 
         [Test]
+        public void When_item_name_does_not_exist_in_inventory()
+        {
+            //Arrange
+            var orderInput = "{ apple: 1 }";
+            var warehouseInput = @"[{ name: ""owd"", inventory: { } }]";
+            // <comment for reviewers only:> structuring it this way so that if I wanted to refactor to use [TestCase(string, string)] for various happy cases, it is easier to do that
+
+            var order = JsonConvert.DeserializeObject<Order>(orderInput);
+            var warehouse = JsonConvert.DeserializeObject<WarehouseNetwork>(warehouseInput);
+
+            // <comment for reviewers only:> I am having to do `InventoryAllocator.InventoryAllocator` because its recommended to NOT name a class the same name as a namespace, but with the limited context in this exercise, I can't come up with a better name for either of the concepts (I do not like InventoryAllocatorService)
+            var allocator = new InventoryAllocator.InventoryAllocator();
+
+            //Act
+            var result = allocator.Allocate(order, warehouse);
+
+            //Assert
+            Assert.That(result, Is.Null);
+        }
+
+        [Test]
         public void When_item_is_split_between_warehouses()
         {
             //Arrange
@@ -98,6 +119,8 @@ namespace InventoryAllocatorTests
         public void When_multiple_shipments_optimize_for_fastest_partial_orders()
         {
             //This is the test case illustrating that my greedy algorithm does NOT optimize for shipment count
+            //  It might be more optimal to have one shipment of 4 pears from 'two', and one shipment of 4 apples from 'three'
+            //  But I'd imagine in real life, the distance and other factors that are not available to me from this data would help decide which is optimal overall
 
             //Arrange
             var orderInput = "{ apple: 4, pear: 4 }";
@@ -138,6 +161,60 @@ namespace InventoryAllocatorTests
             Assert.That(shipment3.Key, Is.EqualTo("three"));
             Assert.That(shipment3.Value.Count, Is.EqualTo(1), "from warehouse 'three', only need to complete apples");
             Assert.That(shipment3.Value["apple"], Is.EqualTo(3));
+        }
+
+        [Test]
+        public void When_warehous_names_are_duplicated_should_throw_exception()
+        {
+            //Arrange
+            var orderInput = "{ apple: 10 }";
+            var warehouseInput = @"[{ name: ""mywarehouse"", inventory: { apple: 5 } }, { name: ""mywarehouse"", inventory: { apple: 5 }}]";
+            // <comment for reviewers only:> structuring it this way so that if I wanted to refactor to use [TestCase(string, string)] for various happy cases, it is easier to do that
+
+            var order = JsonConvert.DeserializeObject<Order>(orderInput);
+            var warehouse = JsonConvert.DeserializeObject<WarehouseNetwork>(warehouseInput);
+
+            // <comment for reviewers only:> I am having to do `InventoryAllocator.InventoryAllocator` because its recommended to NOT name a class the same name as a namespace, but with the limited context in this exercise, I can't come up with a better name for either of the concepts (I do not like InventoryAllocatorService)
+            var allocator = new InventoryAllocator.InventoryAllocator();
+
+            //Act & Assert
+            Assert.Throws<ArgumentException>(() => allocator.Allocate(order, warehouse));
+        }
+
+        [Test, Ignore("It seems that Newtonsoft.Json is perfectly happy with this, and just takes the last-most of the properties and only that value is in the Dictionary object it constructs")]
+        public void When_warehous_data_contains_duplicate_entries_should_throw_exception()
+        {
+            //Arrange
+            var orderInput = "{ apple: 10 }";
+            var warehouseInput = @"[{ name: ""owd"", inventory: { apple: 5 } }, { name: ""dm"", inventory: { apple: 5, apple: 2 }}]";
+            // <comment for reviewers only:> structuring it this way so that if I wanted to refactor to use [TestCase(string, string)] for various happy cases, it is easier to do that
+
+            var order = JsonConvert.DeserializeObject<Order>(orderInput);
+            var warehouse = JsonConvert.DeserializeObject<WarehouseNetwork>(warehouseInput);
+
+            // <comment for reviewers only:> I am having to do `InventoryAllocator.InventoryAllocator` because its recommended to NOT name a class the same name as a namespace, but with the limited context in this exercise, I can't come up with a better name for either of the concepts (I do not like InventoryAllocatorService)
+            var allocator = new InventoryAllocator.InventoryAllocator();
+
+            //Act & Assert
+            Assert.Throws<ArgumentException>(() => allocator.Allocate(order, warehouse));
+        }
+
+        [Test]
+        public void When_order_quantity_is_invalid()
+        {
+            //Arrange
+            var orderInput = "{ apple: -1 }";
+            var warehouseInput = @"[{ name: ""mywarehouse"", inventory: { apple: 5 } }, { name: ""mywarehouse"", inventory: { apple: 5 }}]";
+            // <comment for reviewers only:> structuring it this way so that if I wanted to refactor to use [TestCase(string, string)] for various happy cases, it is easier to do that
+
+            var order = JsonConvert.DeserializeObject<Order>(orderInput);
+            var warehouse = JsonConvert.DeserializeObject<WarehouseNetwork>(warehouseInput);
+
+            // <comment for reviewers only:> I am having to do `InventoryAllocator.InventoryAllocator` because its recommended to NOT name a class the same name as a namespace, but with the limited context in this exercise, I can't come up with a better name for either of the concepts (I do not like InventoryAllocatorService)
+            var allocator = new InventoryAllocator.InventoryAllocator();
+
+            //Act & Assert
+            Assert.Throws<ArgumentException>(() => allocator.Allocate(order, warehouse));
         }
     }
 }
