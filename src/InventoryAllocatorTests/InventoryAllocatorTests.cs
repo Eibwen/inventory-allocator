@@ -181,24 +181,6 @@ namespace InventoryAllocatorTests
             Assert.Throws<ArgumentException>(() => allocator.Allocate(order, warehouse));
         }
 
-        [Test, Ignore("It seems that Newtonsoft.Json is perfectly happy with this, and just takes the last-most of the properties and only that value is in the Dictionary object it constructs")]
-        public void When_warehous_data_contains_duplicate_entries_should_throw_exception()
-        {
-            //Arrange
-            var orderInput = "{ apple: 10 }";
-            var warehouseInput = @"[{ name: ""owd"", inventory: { apple: 5 } }, { name: ""dm"", inventory: { apple: 5, apple: 2 }}]";
-            // <comment for reviewers only:> structuring it this way so that if I wanted to refactor to use [TestCase(string, string)] for various happy cases, it is easier to do that
-
-            var order = JsonConvert.DeserializeObject<Order>(orderInput);
-            var warehouse = JsonConvert.DeserializeObject<WarehouseNetwork>(warehouseInput);
-
-            // <comment for reviewers only:> I am having to do `InventoryAllocator.InventoryAllocator` because its recommended to NOT name a class the same name as a namespace, but with the limited context in this exercise, I can't come up with a better name for either of the concepts (I do not like InventoryAllocatorService)
-            var allocator = new InventoryAllocator.InventoryAllocator();
-
-            //Act & Assert
-            Assert.Throws<ArgumentException>(() => allocator.Allocate(order, warehouse));
-        }
-
         [Test]
         public void When_order_quantity_is_invalid()
         {

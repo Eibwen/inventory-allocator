@@ -4,8 +4,10 @@ using System.Linq;
 
 namespace InventoryAllocator
 {
+    /// A class to determine how to fulfill an order given the current inventory of various warehouses
     public class InventoryAllocator
     {
+        /// The main entry-point for this single responsibility class
         public OrderFulfillment Allocate(Order order, WarehouseNetwork warehouseNetwork)
         {
             if (order == null) throw new ArgumentNullException("order");
@@ -21,20 +23,18 @@ namespace InventoryAllocator
             }
 
             // <comment for reviewers only:> the inline out variable is a newer C# feature, and makes the TryX pattern much nicer to read
+            //   My original thought was I might be using multiple algorithms to find optimal shipment methods, but I ended up with only the greedy implementation
 
             //Ideally we can fulfill an order from a single warehouse, if we can, this function will find that.
-            //  TODO review this pattern of multiple TryX methods if/when there are any performance concerns (this pattern is the most readable/extendable one I can think of, which was mentioned, where performance was not a target on this exercise),
-            //    but it would just be O(W*I*C) where C is a constant of how many ever TryX cases I have, W=warehouses, I=items being ordered
             if (TryFulfillCompleteOrder(order, warehouseNetwork, out var fulfillment))
             {
                 return fulfillment;
             }
 
             return FulfillWithGreedyMultipleShipments(order, warehouseNetwork);
-            
-            //throw new Exception("Should be impossible to get here, global inventory was checked very first and thats the only valid case that would hit this");
         }
 
+        /// Is it possible ot fulfill the given order with our inventory
         private bool CanFulfillOrder(Order order, WarehouseNetwork warehouseNetwork)
         {
             //This could be pre-computed, or cached, but the set operations are quite quick for even very large networks
@@ -58,6 +58,7 @@ namespace InventoryAllocator
             return true;
         }
 
+        /// A single warehouse fulfilling the complete order should always be more optimal than split orders (In my current understanding)
         private bool TryFulfillCompleteOrder(Order order, WarehouseNetwork warehouseNetwork, out OrderFulfillment orderFulfillment)
         {
             foreach (var warehouse in warehouseNetwork)
